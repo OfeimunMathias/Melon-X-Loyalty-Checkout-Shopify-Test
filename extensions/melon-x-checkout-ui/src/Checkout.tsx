@@ -134,7 +134,7 @@ const settings = useSettings();
 
 
   const storeDomain = shop.myshopifyDomain;
-  console.log('storeDomain',storeDomain)
+  console.log('storeDomai',storeDomain)
   const applyAttributeChange = useApplyAttributeChange();
 
   const [step, setStep] = useState<Step>('loyalty');
