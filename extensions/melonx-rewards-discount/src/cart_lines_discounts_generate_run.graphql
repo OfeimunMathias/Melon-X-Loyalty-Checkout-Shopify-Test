@@ -1,0 +1,16 @@
+query CartInput {
+  cart {
+    cost {
+      subtotalAmount {
+        amount
+        currencyCode
+      }
+    }
+    attribute(key: "melonx_points") {
+      value
+    }
+  }
+  discount {
+    discountClasses
+  }
+}
