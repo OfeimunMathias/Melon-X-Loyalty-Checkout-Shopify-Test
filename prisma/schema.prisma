@@ -10,8 +10,8 @@ generator client {
 // See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
 datasource db {
   provider = "sqlite"
-   url      = env("DATABASE_URL")
   //url      = "file:dev.sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Session {
@@ -40,4 +40,10 @@ model ShopConnection {
   merchantDomain   String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  apiKeyID         String?
+  apiKeySecret     String?
+  apiToken         String?
+  tokenType        String?
+  tokenExpiresIn   Int?
+  melonType        String? @default("stack")
 }

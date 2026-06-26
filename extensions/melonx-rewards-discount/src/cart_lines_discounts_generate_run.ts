@@ -20,26 +20,30 @@ export function cartLinesDiscountsGenerateRun(
     return EMPTY_DISCOUNT;
   }
 
-  const pointsValue = input.cart.attribute?.value;
+  const pointsValue = input.cart.points?.value;
+  const voucherCode = input.cart.voucherCode?.value;
+  const discountAmountValue = input.cart.discountAmount?.value;
 
-  if (!pointsValue) {
+  if (!pointsValue || !voucherCode || !discountAmountValue) {
     return EMPTY_DISCOUNT;
   }
 
   const points = Number(pointsValue);
-
-  if (!Number.isFinite(points) || points <= 0) {
-    return EMPTY_DISCOUNT;
-  }
-
+  const requestedDiscountAmount = Number(discountAmountValue);
   const subtotal = Number(input.cart.cost.subtotalAmount.amount);
 
-  if (!Number.isFinite(subtotal) || subtotal <= 0) {
+  if (
+    !Number.isFinite(points) ||
+    points <= 0 ||
+    !Number.isFinite(requestedDiscountAmount) ||
+    requestedDiscountAmount <= 0 ||
+    !Number.isFinite(subtotal) ||
+    subtotal <= 0
+  ) {
     return EMPTY_DISCOUNT;
   }
 
-  // 1 point = ₦1
-  const discountAmount = Math.min(points, subtotal);
+  const discountAmount = Math.min(requestedDiscountAmount, subtotal);
 
   return {
     operations: [

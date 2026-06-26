@@ -6,10 +6,20 @@ query CartInput {
         currencyCode
       }
     }
-    attribute(key: "melonx_points") {
+
+    points: attribute(key: "melonx_points") {
+      value
+    }
+
+    voucherCode: attribute(key: "melonx_voucher_code") {
+      value
+    }
+
+    discountAmount: attribute(key: "melonx_discount_amount") {
       value
     }
   }
+
   discount {
     discountClasses
   }

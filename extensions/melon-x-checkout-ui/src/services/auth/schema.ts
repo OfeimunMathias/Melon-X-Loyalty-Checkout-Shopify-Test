@@ -1,9 +1,14 @@
+
 export function validatePhone(value: string) {
   let formatted = value.trim();
 
+  // Normalize all formats to 234XXXXXXXXXX
   if (formatted.startsWith('+234')) {
-    formatted = `0${formatted.slice(4)}`;
+    formatted = `234${formatted.slice(4)}`; // +2348035701934 → 2348035701934
+  } else if (formatted.startsWith('0')) {
+    formatted = `234${formatted.slice(1)}`; // 08035701934 → 2348035701934
   }
+  // already starts with 234 → leave as is
 
   if (!formatted) {
     return {
@@ -12,7 +17,7 @@ export function validatePhone(value: string) {
     };
   }
 
-  if (!/^\d{11}$/.test(formatted)) {
+  if (!/^234\d{10}$/.test(formatted)) {
     return {
       success: false,
       message: 'Enter a valid Nigerian phone number',
@@ -21,7 +26,7 @@ export function validatePhone(value: string) {
 
   return {
     success: true,
-    data: formatted,
+    data: formatted, // always 2348035701934 format
   };
 }
 
@@ -81,3 +86,5 @@ export function validateCreateCustomer(data: {
     data,
   };
 }
+
+

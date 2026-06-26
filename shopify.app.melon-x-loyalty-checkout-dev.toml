@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "7d012fa527795575004b9ca24aaa2f68"
+name = "Melon-X-Loyalty-Checkout-Dev"
+application_url = "https://api-plugin.getmelon.co"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+
+[webhooks]
+api_version = "2026-04"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+optional_scopes = [
+  "read_customers",
+  "write_discounts",
+  "write_metaobject_definitions",
+  "write_metaobjects",
+  "read_orders",
+  "write_products"
+]
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = [ "https://api-plugin.getmelon.co/shopify/auth/callback" ]

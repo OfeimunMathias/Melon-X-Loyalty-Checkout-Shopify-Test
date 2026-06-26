@@ -5,7 +5,9 @@ import {
     Text,
     TextField,
     Button,
+    Banner,
   } from '@shopify/ui-extensions-react/checkout';
+import { Notice } from '../services/auth/types';
 
   type OtpStepProps = {
     otp: string;
@@ -19,6 +21,7 @@ import {
     onClearOtp: () => void;
     onResendOtp: () => void;
     onBack: () => void;
+    notice:Notice;
   };
 
   export function OtpStep({
@@ -33,6 +36,7 @@ import {
     onClearOtp,
     onResendOtp,
     onBack,
+    notice
   }: OtpStepProps) {
     return (
       <View border="base" borderRadius="large" padding="base">
@@ -42,6 +46,20 @@ import {
               ← Back
             </Button>
           ) : null}
+
+{notice ? (
+          <Banner
+            status={notice.type === 'error' ? 'critical' : 'success'}
+            title={
+              notice.type === 'error'
+                ? 'Something went wrong'
+                : 'Success'
+            }
+          >
+            {notice.message}
+          </Banner>
+        ) : null}
+
 
           <BlockStack spacing="extraTight">
             <Text emphasis="bold">2. Enter OTP</Text>
