@@ -52,6 +52,7 @@ redirect_urls = [ "https://api-plugin.getmelon.co/shopify/auth/callback","https:
 
 [build]
 automatically_update_urls_on_dev = true
+include_config_on_deploy = true
 
 [capabilities]
 network_access = true
