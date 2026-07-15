@@ -1,8 +1,6 @@
 
-import { 
-  useLoaderData,
-  redirect,
-} from "react-router";
+import { Form, useLoaderData, redirect } from "react-router";
+
 
 import type {
   LoaderFunctionArgs,
@@ -41,6 +39,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   };
 }; 
 
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const { session } = await authenticate.admin(request);
+  const formData = await request.formData();
+
+  const params = new URLSearchParams({
+    shop: session.shop,
+    merchantDomain: formData.get("merchantDomain")?.toString().trim() || "",
+    apiKeyID: formData.get("apiKeyID")?.toString().trim() || "",
+    apiKeySecret: formData.get("apiKeySecret")?.toString().trim() || "",
+  });
+
+  return redirect(`${MELON_API_URL}/shopify/auth/install?${params}`);
+};
 
 
 
@@ -67,11 +78,8 @@ export default function Index() {
       <s-section>
         <s-paragraph>Shopify store: {shop}</s-paragraph>
 
-        <form
-          action={`${melonApiUrl}/shopify/auth/install`}
-          method="GET"
-          target="_top"
-        >
+        <Form method="post" target="_top" reloadDocument>
+
           <input type="hidden" name="shop" value={shop} />
 
           <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "400px" }}>
@@ -98,10 +106,10 @@ export default function Index() {
             </s-paragraph>
             <s-button type="submit">Connect Store</s-button>
           </div>
-        </form>
+          </Form> 
       </s-section>
     </s-page>
-  ); 
+  );    
 }   
 
 export const headers: HeadersFunction = (headersArgs) => {
