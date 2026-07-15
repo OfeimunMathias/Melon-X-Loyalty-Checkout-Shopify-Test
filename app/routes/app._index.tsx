@@ -60,7 +60,7 @@ export default function Index() {
   const { shop, melonApiUrl, connected, merchantDomain, apiKeyID } =
     useLoaderData<typeof loader>();
 
-    if (connected && merchantDomain) {
+    if (connected) {
       return (
       <s-page heading="Connect Melon">
         <s-section>
