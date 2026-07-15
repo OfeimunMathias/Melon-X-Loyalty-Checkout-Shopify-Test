@@ -22,6 +22,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     `${MELON_API_URL}/shopify/auth/status?shop=${encodeURIComponent(shop)}`
   );
   const status = await statusRes.json();
+  console.log("Melon status for", shop, JSON.stringify(status));
 
   // credentials submitted, token not captured yet → silent OAuth hop
   if (!status.connected && status.pendingInstall) {
@@ -59,8 +60,8 @@ export default function Index() {
   const { shop, melonApiUrl, connected, merchantDomain, apiKeyID } =
     useLoaderData<typeof loader>();
 
-  if (connected) {
-    return (
+    if (connected && merchantDomain) {
+      return (
       <s-page heading="Connect Melon">
         <s-section>
           <s-paragraph>Store connected</s-paragraph>

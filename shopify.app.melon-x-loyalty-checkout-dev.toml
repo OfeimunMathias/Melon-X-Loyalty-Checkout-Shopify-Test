@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "7d012fa527795575004b9ca24aaa2f68"
-application_url = "https://api-plugin.getmelon.co/shopify/auth/entry"
+application_url = "https://melon-x-loyalty-checkout-shopify-test-production.up.railway.app"
 embedded = true
-name = "melon-x-loyalty-checkout-test"
+name = "melon-x-loyalty-checkout-test" 
 
 [webhooks]
 api_version = "2026-07"
