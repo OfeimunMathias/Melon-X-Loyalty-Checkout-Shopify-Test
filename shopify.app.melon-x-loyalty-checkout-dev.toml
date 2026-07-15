@@ -1,28 +1,57 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "7d012fa527795575004b9ca24aaa2f68"
-name = "Melon-X-Loyalty-Checkout-Dev"
-application_url = "https://api-plugin.getmelon.co"
+application_url = "https://api-plugin.getmelon.co/shopify/auth/entry"
 embedded = true
+name = "melon-x-loyalty-checkout-test"
+
+[webhooks]
+api_version = "2026-07"
+
+  [[webhooks.subscriptions]]
+  uri = "https://api-plugin.getmelon.co/webhooks/app/uninstalled"
+  topics = [ "app/uninstalled" ]
+
+  [[webhooks.subscriptions]]
+  uri = "https://api-plugin.getmelon.co/webhooks/app/scopes_update"
+  topics = [ "app/scopes_update" ]
+
+
+[product.metafields.app.demo_info]
+type = "single_line_text_field"
+name = "Demo Source Info"
+description = "Tracks products created by the Shopify app template for development"
+
+  [product.metafields.app.demo_info.access]
+  admin = "merchant_read_write"
+
+[metaobjects.app.example]
+name = "Example"
+description = "An example metaobject definition created by this template"
+
+  [metaobjects.app.example.access]
+  admin = "merchant_read_write"
+
+[metaobjects.app.example.fields.title]
+name = "Title"
+type = "single_line_text_field"
+required = true
+
+[metaobjects.app.example.fields.description]
+name = "Description"
+type = "multi_line_text_field"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_customers,write_discounts,write_metaobject_definitions,write_metaobjects,read_orders,write_products"
+optional_scopes = [ ]
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = [ "https://api-plugin.getmelon.co/shopify/auth/callback","https://melon-x-loyalty-checkout-shopify-test-production.up.railway.app/auth/callback" ]
 
 [build]
 automatically_update_urls_on_dev = true
 
-[webhooks]
-api_version = "2026-04"
-
-[access_scopes]
-# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = ""
-optional_scopes = [
-  "read_customers",
-  "write_discounts",
-  "write_metaobject_definitions",
-  "write_metaobjects",
-  "read_orders",
-  "write_products"
-]
-use_legacy_install_flow = false
-
-[auth]
-redirect_urls = [ "https://api-plugin.getmelon.co/shopify/auth/callback" ]
+[capabilities]
+network_access = true

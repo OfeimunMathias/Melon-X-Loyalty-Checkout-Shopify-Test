@@ -18,6 +18,7 @@ import {
 } from '@shopify/ui-extensions-react/checkout';
 import React, {useEffect, useMemo, useState} from 'react';
 import { MelonCoreRedirect } from './components/MelonRedirect';
+import { isAllowlistedEmail } from './allowlist';
 
 import authServices from './services/auth/auth';
 import {
@@ -92,6 +93,8 @@ class ExtensionErrorBoundary extends React.Component<
 function MelonXCheckout() {
 
   const {shop, buyerIdentity, checkoutToken} = useApi();
+  const checkoutEmail = buyerIdentity?.email?.current ?? '';
+const isTestUser = isAllowlistedEmail(checkoutEmail);
   const cartLines = useCartLines();
   const totalAmount = useTotalAmount();
   // 2. Inside MelonXCheckout(), replace the hardcoded line (~line 172):
@@ -179,7 +182,8 @@ const settings = useSettings();
   }
 
   useEffect(() => {
-    if (!shopifyAppUrl) return; // wait for settings to load
+    // if (!shopifyAppUrl || !isTestUser) return;
+    if (!shopifyAppUrl) return;
 
     async function loadMelonConfig() {
       try {
@@ -206,7 +210,7 @@ const settings = useSettings();
       }
     }
     loadMelonConfig();
-  }, [storeDomain, shopifyAppUrl]);
+  }, [storeDomain, shopifyAppUrl,isTestUser]);
 
 
   const billingEmail = buyerIdentity?.email?.current || email || '';
@@ -848,6 +852,10 @@ async function verifyOtp() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   }, [resendCountdown]);
 
+  // if (!isTestUser) {
+  //   return null; 
+  // } 
+
   if (showDiscountSuccessScreen && appliedReward) {
 
     return (
@@ -1016,6 +1024,7 @@ async function verifyOtp() {
   console.log('melonTypeNews', melonType);
 
 
+
   if (configLoading) {
     return (
       <BlockStack spacing="base">
@@ -1029,7 +1038,7 @@ async function verifyOtp() {
       <Banner status="critical" title="Melon connection error">
         <Text>{configError}</Text>
       </Banner>
-    );
+    ); 
   }
 
 return (
@@ -1092,10 +1101,19 @@ return (
 }
 
 function MelonXThankYouRewards() {
+  const { buyerIdentity } = useApi();
   const attributes = useAttributes();
+
+  const checkoutEmail = buyerIdentity?.email?.current ?? '';
 
   const getAttribute = (key: string) =>
     attributes.find((attribute) => attribute.key === key)?.value || '';
+
+  const participatedInMelonFlow = Boolean(getAttribute('melonx_type'));
+
+  if (!isAllowlistedEmail(checkoutEmail) && !participatedInMelonFlow) {
+    return null; 
+  }
 
   const points = Number(getAttribute('melonx_points_to_earn') || '0');
   const isNewCustomer = getAttribute('melonx_new_customer_joined') === '1';
@@ -1103,7 +1121,7 @@ function MelonXThankYouRewards() {
   const melonType = getAttribute('melonx_type');
 
   return (
-    <Banner  title={points > 0 ? 'Congratulations! 🎉' : ''}>
+    <Banner title={points > 0 ? 'Congratulations! 🎉' : ''}>
       <BlockStack spacing="tight">
         {points > 0 ? (
           <Text>
@@ -1122,9 +1140,10 @@ function MelonXThankYouRewards() {
             </Link>
           )
         ) : (
-          <MelonCoreRedirect NewCustomer={false}/>
+          <MelonCoreRedirect NewCustomer={false} />
         )}
-      </BlockStack>
+      </BlockStack> 
+
     </Banner>
   );
-}
+} 
