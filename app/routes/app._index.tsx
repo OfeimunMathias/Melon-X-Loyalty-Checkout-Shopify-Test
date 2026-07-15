@@ -35,7 +35,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     shop,
     melonApiUrl: MELON_API_URL,
     connected: !!status.connected,
-    merchantDomain: status.merchantDomain ?? "",
+    merchantDomain: status.merchantDomain ?? "", 
     apiKeyID: status.apiKeyID ?? "",
   };
 }; 
